@@ -1,0 +1,80 @@
+[
+    {
+      "dnsSearchDomains": null,
+      "logConfiguration": null,
+      "entryPoint": null,
+      "portMappings": [
+        {
+          "hostPort": 8126,
+          "containerPort": 8126,
+          "protocol": "tcp"
+        }
+      ],
+      "command": null,
+      "linuxParameters": null,
+      "cpu": 10,
+      "environment": [
+        {
+          "name": "DD_API_KEY",
+          "value": ""
+        },
+        {
+          "name": "DD_APM_ENABLED",
+          "value": "true"
+        },
+        {
+          "name": "DD_APM_NON_LOCAL_TRAFFIC",
+          "value": "true"
+        },
+        {
+          "name": "DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL",
+          "value": "true"
+        },
+        {
+          "name": "DD_LOGS_ENABLED",
+          "value": "true"
+        },
+        {
+          "name": "DD_PROCESS_AGENT_ENABLED",
+          "value": "true"
+        },
+        {
+          "name": "DD_SITE",
+          "value": "datadoghq.com"
+        }
+      ],
+      "resourceRequirements": null,
+      "ulimits": null,
+      "dnsServers": null,
+      "mountPoints": [
+        {
+          "readOnly": true,
+          "containerPath": "/var/run/docker.sock",
+          "sourceVolume": "docker_sock"
+        },
+        {
+          "readOnly": true,
+          "containerPath": "/host/sys/fs/cgroup",
+          "sourceVolume": "cgroup"
+        },
+        {
+          "readOnly": true,
+          "containerPath": "/host/proc",
+          "sourceVolume": "proc"
+        },
+        {
+          "readOnly": false,
+          "containerPath": "/opt/datadog-agent/run",
+          "sourceVolume": "pointdir"
+        },
+        {
+          "readOnly": true,
+          "containerPath": "/etc/passwd",
+          "sourceVolume": "passwd"
+        }
+      ],
+      "memory": 256,
+      "image": "datadog/agent:latest",
+      "name": "datadog-agent"
+  }
+]

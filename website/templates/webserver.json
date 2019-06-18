@@ -1,0 +1,129 @@
+[
+    {
+      "name": "nginx",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/${full_service_name}",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "entryPoint": [],
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80,
+          "protocol": "tcp"
+        },
+        {
+          "hostPort": 443,
+          "containerPort": 443,
+          "protocol": "tcp"
+        }
+      ],
+      "command": [
+        "nginx",
+        "-g",
+        "daemon off;"
+      ],
+      "cpu": 0,
+      "memoryReservation": 128,
+      "image": "${account_id}.dkr.ecr.us-east-1.amazonaws.com/${frontend_image}",
+      "essential": true
+    },
+    {
+      "name": "server",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/${full_service_name}",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "entryPoint": [],
+      "portMappings": [
+        {
+          "hostPort": 8000,
+          "containerPort": 8000,
+          "protocol": "tcp"
+        }
+      ],
+      "command": [
+        "bash",
+        "-c",
+        "python manage.py makemigrations && python manage.py migrate && gunicorn home.wsgi -b 0.0.0.0:8000"
+      ],
+      "cpu": 0,
+      "environment": [
+        {
+          "name": "DJANGO_SETTINGS_MODULE",
+          "value": "${django_settings_module}"
+        },
+        {
+          "name": "ENV_NAME",
+          "value": "${environment}"
+        },
+        {
+          "name": "SENDGRID_KEY",
+          "value": "${sendgrid_key}"
+        },
+        {
+          "name": "SENTRY_ENVIRONMENT",
+          "value": "${full_service_name}"
+        },
+        {
+          "name": "SENTRY_KEY",
+          "value": "${sentry_key}"
+        },
+        {
+          "name": "DB_HOST",
+          "value": "${db_host}"
+        },
+        {
+          "name": "DB_PORT",
+          "value": "${db_port}"
+        },
+        {
+          "name": "DB_NAME",
+          "value": "${db_name}"
+        },
+        {
+          "name": "DB_USER",
+          "value": "${db_username}"
+        },
+        {
+          "name": "DB_PASSWORD",
+          "value": "${db_password}"
+        }
+
+      ],
+      "memoryReservation": 128,
+      "image": "${account_id}.dkr.ecr.us-east-1.amazonaws.com/${backend_image}"
+
+    }
+
+  ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
